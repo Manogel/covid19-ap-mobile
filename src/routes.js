@@ -48,8 +48,9 @@ const Routes = () =>
           inactiveTintColor: '#999',
           style: {
             height: 55,
-            borderTopWidth: 0,
+            borderTopWidth: 1,
             backgroundColor: '#fff',
+            borderTopColor: '#f7f7f7',
           },
         },
         defaultNavigationOptions: ({ navigation }) => ({
