@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -9,7 +8,7 @@ import Header from '~/components/Header';
 
 import { Container, CardContent, ImageTopic, Title, Resum } from './styles';
 
-export default function Informations() {
+export default function Informations({ navigation: { navigate } }) {
   const [topics, setTopics] = useState(null);
 
   useEffect(() => {
@@ -38,7 +37,17 @@ export default function Informations() {
       <FlatList
         data={topics}
         renderItem={({ item: topic }) => (
-          <CardContent>
+          <CardContent
+            onPress={() => {
+              navigate('Detail', {
+                topic: {
+                  imagem: topic.imagem.url,
+                  titulo: topic.titulo,
+                  texto: topic.texto,
+                },
+              });
+            }}
+          >
             <ImageTopic source={{ uri: topic?.imagem?.url }} />
             <Title>{topic.titulo}</Title>
             <Resum numberOfLines={3}>{topic.resumo}</Resum>

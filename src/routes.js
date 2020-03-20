@@ -4,6 +4,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
+import Detail from '~/pages/Detail';
 import Informations from '~/pages/Informations';
 import Map from '~/pages/Map';
 
@@ -20,6 +21,8 @@ const defaultStackNavigationOptions = {
       height: 0,
     },
   },
+  headerBackTitle: null,
+  headerBackTitleVisible: false,
   headerTitleAlign: 'left',
   headerTintColor: '#fff',
   headerTitleStyle: {
@@ -36,7 +39,7 @@ const Routes = () =>
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
         Informações: createStackNavigator(
-          { Informations },
+          { Informations, Detail },
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
       },
@@ -55,7 +58,7 @@ const Routes = () =>
         },
         defaultNavigationOptions: ({ navigation }) => ({
           header: () => null,
-          tabBarIcon: ({ focused, tintColor }) => {
+          tabBarIcon: ({ tintColor }) => {
             const { routeName } = navigation.state;
             switch (routeName) {
               case 'Mapa':
