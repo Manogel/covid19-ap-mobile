@@ -3,6 +3,7 @@ import MapView, { Marker, UrlTile } from 'react-native-maps';
 
 import axios from 'axios';
 
+import CardCheers from '~/components/CardCheers';
 import CardInfo from '~/components/CardInfo';
 import Header from '~/components/Header';
 
@@ -69,6 +70,7 @@ export default function Map() {
       {selected && (
         <CardInfo ubs={selected} onClose={() => setSelected(null)} />
       )}
+      <CardCheers />
     </Container>
   );
 }
