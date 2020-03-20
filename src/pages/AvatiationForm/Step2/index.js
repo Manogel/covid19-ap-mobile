@@ -23,7 +23,7 @@ export default function Step2({ navigation: { dispatch, getParam } }) {
 
   function handleSelectSymptom(id) {
     setCountries(
-      countries.map(s => (s.id === id ? { ...s, selected: !s.selected } : s))
+      countries.map(s => (s.id === id ? { ...s, checked: !s.checked } : s))
     );
   }
 
@@ -62,12 +62,12 @@ export default function Step2({ navigation: { dispatch, getParam } }) {
           <SegmentTitle>Onde?</SegmentTitle>
           <FlatList
             data={countries}
-            renderItem={({ item: { name, id, selected } }) => (
+            renderItem={({ item: { name, id, checked } }) => (
               <Option
-                selected={selected}
+                selected={checked}
                 onPress={() => handleSelectSymptom(id)}
               >
-                <OptionName selected={selected}>{name}</OptionName>
+                <OptionName selected={checked}>{name}</OptionName>
               </Option>
             )}
             keyExtractor={item => item.id}

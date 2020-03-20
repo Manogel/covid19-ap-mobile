@@ -39,3 +39,9 @@ export const TextHtml = styled(HTMLView).attrs({
     },
   },
 })``;
+
+export const ContentSpace = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;

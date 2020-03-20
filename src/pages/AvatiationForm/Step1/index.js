@@ -21,12 +21,12 @@ export default function Step1({ navigation: { navigate } }) {
 
   function handleSelectSymptom(id) {
     setSymptoms(
-      symptoms.map(s => (s.id === id ? { ...s, selected: !s.selected } : s))
+      symptoms.map(s => (s.id === id ? { ...s, checked: !s.checked } : s))
     );
   }
 
   function handleNextStep() {
-    const symptomsSelected = symptoms.filter(({ selected }) => selected);
+    const symptomsSelected = symptoms.filter(({ checked }) => checked);
     const data = {
       symptoms: symptomsSelected,
       suspiciousContact,
@@ -41,9 +41,9 @@ export default function Step1({ navigation: { navigate } }) {
 
       <FlatList
         data={symptoms}
-        renderItem={({ item: { name, id, selected } }) => (
-          <Option selected={selected} onPress={() => handleSelectSymptom(id)}>
-            <OptionName selected={selected}>{name}</OptionName>
+        renderItem={({ item: { name, id, checked } }) => (
+          <Option selected={checked} onPress={() => handleSelectSymptom(id)}>
+            <OptionName selected={checked}>{name}</OptionName>
           </Option>
         )}
         keyExtractor={item => item.id}

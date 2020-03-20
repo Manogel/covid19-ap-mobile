@@ -10,6 +10,7 @@ import AvaliationStep2 from '~/pages/AvatiationForm/Step2';
 import Detail from '~/pages/Detail';
 import Informations from '~/pages/Informations';
 import Map from '~/pages/Map';
+import UserForm from '~/pages/UserForm';
 
 import { colors } from './styles';
 
@@ -37,7 +38,7 @@ const Routes = () =>
     createBottomTabNavigator(
       {
         Mapa: createStackNavigator(
-          { Map, AvaliationStep1, AvaliationStep2, AvaliationResult },
+          { Map, AvaliationStep1, AvaliationStep2, AvaliationResult, UserForm },
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
         Informações: createStackNavigator(
