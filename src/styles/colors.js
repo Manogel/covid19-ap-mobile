@@ -9,7 +9,7 @@ export default {
 
   primary: '#0077D9',
   secundary: '#F7f7f7',
-  success: '#9dca83',
+  success: '#43BE2E',
   danger: '#e37a7a',
 
   title: '#fff',

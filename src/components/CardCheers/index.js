@@ -22,7 +22,7 @@ function CardCheers({ navigation: { navigate } }) {
           <IconHealth source={bem} />
           <TextHealth>Bem</TextHealth>
         </Button>
-        <Button>
+        <Button onPress={() => navigate('AvaliationStep1')}>
           <IconHealth source={mal} />
           <TextHealth>mal</TextHealth>
         </Button>

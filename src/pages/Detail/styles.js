@@ -1,5 +1,4 @@
 import HTMLView from 'react-native-htmlview';
-import HTML from 'react-native-render-html';
 
 import styled from 'styled-components/native';
 

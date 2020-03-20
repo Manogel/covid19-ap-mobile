@@ -4,6 +4,9 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
+import AvaliationResult from '~/pages/AvaliationResult';
+import AvaliationStep1 from '~/pages/AvatiationForm/Step1';
+import AvaliationStep2 from '~/pages/AvatiationForm/Step2';
 import Detail from '~/pages/Detail';
 import Informations from '~/pages/Informations';
 import Map from '~/pages/Map';
@@ -21,7 +24,6 @@ const defaultStackNavigationOptions = {
       height: 0,
     },
   },
-  headerBackTitle: null,
   headerBackTitleVisible: false,
   headerTitleAlign: 'left',
   headerTintColor: '#fff',
@@ -35,7 +37,7 @@ const Routes = () =>
     createBottomTabNavigator(
       {
         Mapa: createStackNavigator(
-          { Map },
+          { Map, AvaliationStep1, AvaliationStep2, AvaliationResult },
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
         Informações: createStackNavigator(

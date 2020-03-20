@@ -7,7 +7,7 @@ export default function Header({ title, subtitle }) {
   return (
     <Container>
       <Title>{title}</Title>
-      <SubTitle>{subtitle}</SubTitle>
+      {subtitle && <SubTitle>{subtitle}</SubTitle>}
     </Container>
   );
 }

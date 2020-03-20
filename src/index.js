@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, Platform } from 'react-native';
+import { StatusBar, YellowBox } from 'react-native';
 import '~/config/ReactotronConfig';
 import { Provider } from 'react-redux';
 
 import createNavigator from '~/routes';
 
 import store from './store';
+
+YellowBox.ignoreWarnings([
+  'VirtualizedLists should never be nested', // TODO: Remove when fixed
+]);
 
 export default function App() {
   const [userLogged, setUserLogged] = useState(false);
