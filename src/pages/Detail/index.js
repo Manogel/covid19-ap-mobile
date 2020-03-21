@@ -10,7 +10,7 @@ export default function Detail({ navigation }) {
   return (
     <Container showsVerticalScrollIndicator={false}>
       <CardContent>
-        <ImageTopic source={{ uri: imagem }} />
+        <ImageTopic source={{ uri: imagem, cache: 'force-cache' }} />
         <TextHtml value={`<p>${texto} </p>`} debug />
       </CardContent>
     </Container>

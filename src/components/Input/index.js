@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from 'react';
 
 import { useField } from '@unform/core';
 
-import { Container, Error, Label } from './styles';
+import { Container, Error, Label, InputMask } from './styles';
 
-function Input({ name, label, ...rest }) {
+function Input({ name, label, type, ...rest }) {
   const inputRef = useRef(null);
   const { fieldName, registerField, defaultValue = '', error } = useField(name);
   useEffect(() => {
@@ -28,7 +28,9 @@ function Input({ name, label, ...rest }) {
   return (
     <>
       {label && <Label>{label}</Label>}
+
       <Container ref={inputRef} defaultValue={defaultValue} {...rest} />
+
       {error && <Error> {error} </Error>}
     </>
   );
@@ -38,4 +40,5 @@ export default Input;
 
 Input.defaultProps = {
   editable: true,
+  type: null,
 };

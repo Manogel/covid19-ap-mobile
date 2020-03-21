@@ -48,7 +48,9 @@ export default function Informations({ navigation: { navigate } }) {
               });
             }}
           >
-            <ImageTopic source={{ uri: topic?.imagem?.url }} />
+            <ImageTopic
+              source={{ uri: topic?.imagem?.url, cache: 'force-cache' }}
+            />
             <Title>{topic.titulo}</Title>
             <Resum numberOfLines={3}>{topic.resumo}</Resum>
           </CardContent>

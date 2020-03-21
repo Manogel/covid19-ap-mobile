@@ -38,14 +38,16 @@ export default function AvaliationResult({
         <TextHtml value={render} />
       </Container>
 
-      <Button
-        success
-        onPress={() => {
-          navigate('UserForm');
-        }}
-      >
-        Preencher formulário pra acompanhamento
-      </Button>
+      {result && (
+        <Button
+          success
+          onPress={() => {
+            navigate('UserForm');
+          }}
+        >
+          Preencher formulário pra acompanhamento
+        </Button>
+      )}
     </>
   );
 }

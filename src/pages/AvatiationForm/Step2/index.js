@@ -28,7 +28,7 @@ export default function Step2({ navigation: { dispatch, getParam } }) {
   }
 
   function handleFinalStep() {
-    const result = CheckSymptoms(43);
+    const result = CheckSymptoms({ ...dataSymptoms, traveled, countries });
     const resetAction = StackActions.reset({
       index: 0,
       actions: [

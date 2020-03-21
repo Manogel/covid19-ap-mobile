@@ -4,8 +4,13 @@ import '~/config/ReactotronConfig';
 import { Provider } from 'react-redux';
 
 import createNavigator from '~/routes';
+import NavigationService from '~/services/navigation';
 
-import store from './store';
+import '~/scripts/validations';
+
+import { store, persistor } from './store';
+
+import { PersistGate } from 'redux-persist/integration/react';
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested', // TODO: Remove when fixed
@@ -23,8 +28,14 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar backgroundColor="transparent" barStyle="light-content" />
-      <Routes />
+      <PersistGate loading={() => null} persistor={persistor}>
+        <StatusBar backgroundColor="transparent" barStyle="light-content" />
+        <Routes
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+          }}
+        />
+      </PersistGate>
     </Provider>
   );
 }

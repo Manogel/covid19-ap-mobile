@@ -34,8 +34,28 @@ Baseado em suas respostas, é provável que essa situação NÃO se enquadre com
 
     Em caso de dúvidas, ligue para o Disque Saúde 136 do Ministério da Saúde, ou procure uma unidade de saúde.</p>`;
 
-export default function() {
-  return true
-    ? { result: true, render: result_true }
-    : { result: false, render: result_false };
+export default function(data) {
+  const { traveled, symptoms, suspiciousContact, confirmedContact } = data;
+
+  let numberSymptoms = 0;
+
+  symptoms.forEach(({ id }) => {
+    if ([10, 3, 7, 9].includes(id)) {
+      numberSymptoms += 1;
+    }
+  });
+
+  if (numberSymptoms > 2 && suspiciousContact && confirmedContact) {
+    return { result: true, render: result_true };
+  }
+
+  if (numberSymptoms > 2 && !suspiciousContact && confirmedContact) {
+    return { result: true, render: result_true };
+  }
+
+  if (numberSymptoms > 2 && suspiciousContact && !confirmedContact) {
+    return { result: true, render: result_true };
+  }
+
+  return { result: false, render: result_false };
 }
