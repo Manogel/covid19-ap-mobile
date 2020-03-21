@@ -24,7 +24,7 @@
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* covid19apTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = covid19apTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* covid19ap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = covid19ap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Coronavírus AP - SUS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coronavírus AP - SUS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = covid19ap/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = covid19ap/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -166,7 +166,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* covid19ap.app */,
+				13B07F961A680F5B00A75B9A /* Coronavírus AP - SUS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,7 +221,7 @@
 			);
 			name = covid19ap;
 			productName = covid19ap;
-			productReference = 13B07F961A680F5B00A75B9A /* covid19ap.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Coronavírus AP - SUS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -416,7 +416,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.msbtec.covid19ap;
-				PRODUCT_NAME = covid19ap;
+				PRODUCT_NAME = "Coronavírus AP - SUS";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -435,7 +435,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.msbtec.covid19ap;
-				PRODUCT_NAME = covid19ap;
+				PRODUCT_NAME = "Coronavírus AP - SUS";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
