@@ -37,3 +37,9 @@ export const Label = styled.Text`
   color: #444;
   margin-bottom: 7px;
 `;
+
+export const Error = styled.Text`
+  margin-top: 5px;
+  font-size: 12px;
+  color: ${colors.danger};
+`;

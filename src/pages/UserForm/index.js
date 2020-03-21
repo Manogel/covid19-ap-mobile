@@ -12,12 +12,13 @@ import PickerOptions from '~/components/PickerOptions';
 import dataSymptoms from '~/data/symptoms';
 import { colors } from '~/styles';
 
-import { Container, Title, InputContent, Label } from './styles';
+import { Container, Title, InputContent, Label, Error } from './styles';
 
 export default function UserForm() {
   const [suspiciousContact, setSuspiciousContact] = useState(null);
   const [confirmedContact, setConfirmedContact] = useState(null);
   const [traveled, setTraveled] = useState(null);
+  const [sex, setSex] = useState({ error: null, value: null });
   const [symptoms, setSymptoms] = useState(dataSymptoms);
   const formRef = useRef(null);
 
@@ -39,9 +40,15 @@ export default function UserForm() {
           .max(100, 'Máximo 50 caracteres')
           .required('Email é obrigatório'),
       });
+
       await schema.validate(values, {
         abortEarly: false,
       });
+      formRef.current.setErrors({});
+      if (!sex.value) {
+        setSex({ ...sex, error: 'Selecione seu sexo' });
+        return;
+      }
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -186,15 +193,16 @@ export default function UserForm() {
             selectButtonText="Selecionar"
             title="Selecione"
             data={[
-              { id: 1, name: 'MASCULINO' },
-              { id: 2, name: 'FEMININO' },
+              { id: 1, name: 'MASCULINO', checked: sex.value === 1 },
+              { id: 2, name: 'FEMININO', checked: sex.value === 2 },
             ]}
-            onSelect={value => setSuspiciousContact(value[0])}
-            onRemoveItem={value => setSuspiciousContact(value[0])}
+            onSelect={value => setSex({ error: null, value: value[0] })}
+            onRemoveItem={value => setSex({ error: null, value: value[0] })}
             buttonTextStyle={{ textTransform: 'capitalize' }}
             showSearchBox={false}
             iconColorItemSected={colors.success}
           />
+          {sex.error && <Error>{sex.error}</Error>}
         </InputContent>
 
         <InputContent>
