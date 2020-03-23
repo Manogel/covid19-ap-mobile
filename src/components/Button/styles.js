@@ -10,7 +10,7 @@ export const Container = styled.TouchableOpacity.attrs({
   align-items: center;
   justify-content: center;
   margin: 8px;
-  padding: 10px;
+  padding: 15px 10px;
 
   ${({ disabled }) =>
     disabled &&

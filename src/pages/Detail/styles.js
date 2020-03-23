@@ -2,9 +2,13 @@ import HTMLView from 'react-native-htmlview';
 
 import styled from 'styled-components/native';
 
-import { NunitoSemiBold, colors, Nunito } from '~/styles';
+import { colors } from '~/styles';
 
-export const Container = styled.ScrollView`
+export const Container = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    paddingBottom: 20,
+  },
+})`
   background: ${colors.secundary};
 `;
 
@@ -35,6 +39,7 @@ export const TextHtml = styled(HTMLView).attrs({
       color: '#222',
       textAlign: 'justify',
       fontFamily: 'nunito',
+      lineHeight: 18,
     },
   },
 })``;

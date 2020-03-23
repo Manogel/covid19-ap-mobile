@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, memo } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {
@@ -8,9 +8,13 @@ import {
   Subtitle,
   Street,
   ButtonClose,
+  ContactsTitle,
+  Contacts,
 } from './styles';
 
-export default function CardInfo({ ubs, onClose }) {
+function CardInfo({ ubs, onClose }) {
+  const numberContacts = useMemo(() => ubs.telefones.length, [ubs]);
+
   return (
     <Container>
       <ContentSpace>
@@ -24,6 +28,16 @@ export default function CardInfo({ ubs, onClose }) {
       <Street>
         {ubs.logradouro}, {ubs.bairro}, {ubs.municipio} - {ubs.cep}
       </Street>
+      {numberContacts > 0 && (
+        <ContactsTitle>Telefones para contato</ContactsTitle>
+      )}
+      {ubs?.telefones.map(({ ddd, numero }) => (
+        <Contacts key={numero}>
+          {ddd} {numero}
+        </Contacts>
+      ))}
     </Container>
   );
 }
+
+export default memo(CardInfo);

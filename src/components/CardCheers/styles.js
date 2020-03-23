@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-import { Nunito, NunitoSemiBold } from '~/styles';
+import { NunitoSemiBold } from '~/styles';
 
 export const Container = styled.View`
   position: absolute;
@@ -9,6 +9,7 @@ export const Container = styled.View`
   align-self: center;
   bottom: 0;
   margin: 20px;
+  margin-bottom: 40px;
   padding: 15px;
   border-radius: 5px;
   shadow-color: #000;
@@ -32,6 +33,7 @@ export const Title = styled(NunitoSemiBold)`
   font-size: 10px;
   line-height: 20px;
   text-align: center;
+  margin-bottom: 5px;
 `;
 
 export const Button = styled.TouchableOpacity.attrs({

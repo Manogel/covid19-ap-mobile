@@ -27,7 +27,7 @@ export const Option = styled.TouchableOpacity.attrs({
   border-radius: 4px;
   align-items: center;
   justify-content: center;
-  padding: 7px 10px;
+  padding: 10px;
   margin-top: 10px;
 
   ${({ selected }) =>

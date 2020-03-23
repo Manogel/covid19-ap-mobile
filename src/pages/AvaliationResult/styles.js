@@ -8,7 +8,7 @@ import { colors, PlatformType } from '~/styles';
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
-    padding: 10,
+    padding: 15,
   },
 })`
   background: ${colors.secundary};
