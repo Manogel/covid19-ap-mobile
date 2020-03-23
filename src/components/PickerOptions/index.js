@@ -78,9 +78,16 @@ export default function SelectPicker(props) {
     }); */
 
     const newData = data.map(i => {
-      return preSelectedItem.map(({ id }) =>
-        i.id === id ? { ...i, checked: true } : { ...i, checked: false }
-      );
+      let { checked } = i;
+
+      for (const _selectedItem of preSelectedItem) {
+        if (i.id === _selectedItem.id) {
+          checked = true;
+          break;
+        }
+      }
+
+      return { ...i, checked };
     });
 
     setDefaulState(oldData => ({
@@ -142,9 +149,7 @@ export default function SelectPicker(props) {
       preSelectedItem,
     }));
 
-    if (onRemoveItem) {
-      onRemoveItem(selectedIds, selectedObjectItems);
-    }
+    onRemoveItem && onRemoveItem(selectedIds, selectedObjectItems);
   }
 
   function keyExtractor(item, idx) {
