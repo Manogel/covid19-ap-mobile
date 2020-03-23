@@ -67,7 +67,7 @@ export default function SelectPicker(props) {
 
   function cancelSelection() {
     const { data, preSelectedItem } = defaultState;
-    data.forEach(item => {
+    /* data.forEach(item => {
       item.checked = false;
       for (const _selectedItem of preSelectedItem) {
         if (item.id === _selectedItem.id) {
@@ -75,10 +75,17 @@ export default function SelectPicker(props) {
           break;
         }
       }
+    }); */
+
+    const newData = data.map(i => {
+      return preSelectedItem.map(({ id }) =>
+        i.id === id ? { ...i, checked: true } : { ...i, checked: false }
+      );
     });
+
     setDefaulState(oldData => ({
       ...oldData,
-      data,
+      data: newData,
       show: false,
       selectedItem: preSelectedItem,
     }));
@@ -107,6 +114,37 @@ export default function SelectPicker(props) {
       data: newData,
       selectedItem,
     }));
+  }
+
+  function onRemoveTag(tag, index) {
+    const { onRemoveItem } = props;
+    const preSelectedItem = [];
+    const selectedIds = [];
+    const selectedObjectItems = [];
+    const { data } = defaultState;
+    const newData = data.map(item => {
+      let { checked } = item;
+
+      if (item.id === tag.id) {
+        checked = false;
+      }
+      if (checked) {
+        preSelectedItem.push(item);
+        selectedIds.push(item.id);
+        selectedObjectItems.push(item);
+      }
+
+      return { ...item, checked };
+    });
+    setDefaulState(oldState => ({
+      ...oldState,
+      data: newData,
+      preSelectedItem,
+    }));
+
+    if (onRemoveItem) {
+      onRemoveItem(selectedIds, selectedObjectItems);
+    }
   }
 
   function keyExtractor(item, idx) {
@@ -298,37 +336,13 @@ export default function SelectPicker(props) {
           </Text>
         ) : (
           <View style={styles.tagWrapper}>
-            {preSelectedItem.map((tag, index) => {
-              return (
-                <TagItem
-                  key={index}
-                  onRemoveTag={() => {
-                    const preSelectedItem = [];
-                    const selectedIds = [];
-                    const selectedObjectItems = [];
-                    const { data } = defaultState;
-                    data.map(item => {
-                      if (item.id === tag.id) {
-                        item.checked = false;
-                      }
-                      if (item.checked) {
-                        preSelectedItem.push(item);
-                        selectedIds.push(item.id);
-                        selectedObjectItems.push(item);
-                      }
-                    });
-                    setDefaulState(oldState => ({
-                      ...oldState,
-                      data,
-                      preSelectedItem,
-                    }));
-                    onRemoveItem &&
-                      onRemoveItem(selectedIds, selectedObjectItems);
-                  }}
-                  tagName={tag.name}
-                />
-              );
-            })}
+            {preSelectedItem.map((tag, index) => (
+              <TagItem
+                key={index}
+                onRemoveTag={() => onRemoveTag(tag, index)}
+                tagName={tag.name}
+              />
+            ))}
           </View>
         )
       ) : (
