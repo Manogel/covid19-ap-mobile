@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '~/components/Button';
 import Header from '~/components/Header';
-import dataSymptoms from '~/data/symptoms';
+import SymptomActions from '~/store/ducks/symptom';
+import { colors } from '~/styles';
 
 import {
   Container,
@@ -14,27 +16,13 @@ import {
 } from '../styles';
 
 export default function Step1({ navigation: { navigate } }) {
-  const [symptoms, setSymptoms] = useState(dataSymptoms);
+  const dispatch = useDispatch();
+  const symptoms = useSelector(state => state.symptom.data);
 
-  const [suspiciousContact, setSuspiciousContact] = useState(null);
-  const [confirmedContact, setConfirmedContact] = useState(null);
-
-  function handleSelectSymptom(id) {
-    setSymptoms(
-      symptoms.map(s => (s.id === id ? { ...s, checked: !s.checked } : s))
-    );
+  function handleSelectSymptom(id, checked) {
+    dispatch(SymptomActions.checkSymptom({ id, checked: !checked }));
   }
 
-  function handleNextStep() {
-    const symptomsSelected = symptoms.filter(({ checked }) => checked);
-    const data = {
-      symptoms: symptomsSelected,
-      suspiciousContact,
-      confirmedContact,
-    };
-
-    navigate('AvaliationStep2', { data });
-  }
   return (
     <Container showsVerticalScrollIndicator={false}>
       <SegmentTitle>Selecione seus sintomas</SegmentTitle>
@@ -42,7 +30,10 @@ export default function Step1({ navigation: { navigate } }) {
       <FlatList
         data={symptoms}
         renderItem={({ item: { name, id, checked } }) => (
-          <Option selected={checked} onPress={() => handleSelectSymptom(id)}>
+          <Option
+            selected={checked}
+            onPress={() => handleSelectSymptom(id, checked)}
+          >
             <OptionName selected={checked}>{name}</OptionName>
           </Option>
         )}
@@ -59,51 +50,7 @@ export default function Step1({ navigation: { navigate } }) {
         }}
       />
 
-      <SegmentTitle>
-        Teve contato próximo com caso suspeito de COVID-19 (Coronavírus) nos
-        últimos 14 dias?
-      </SegmentTitle>
-
-      <ContentSpace>
-        <Option
-          onPress={() => setSuspiciousContact(true)}
-          selected={suspiciousContact === true}
-        >
-          <OptionName selected={suspiciousContact === true}>Sim</OptionName>
-        </Option>
-        <Option
-          selected={suspiciousContact === false}
-          onPress={() => setSuspiciousContact(false)}
-        >
-          <OptionName selected={suspiciousContact === false}>Não</OptionName>
-        </Option>
-      </ContentSpace>
-
-      <SegmentTitle>
-        Teve contato próximo com caso confirmado de COVID-19 (Coronavírus) nos
-        últimos 14 dias?
-      </SegmentTitle>
-
-      <ContentSpace>
-        <Option
-          onPress={() => setConfirmedContact(true)}
-          selected={confirmedContact === true}
-        >
-          <OptionName selected={confirmedContact === true}>Sim</OptionName>
-        </Option>
-        <Option
-          selected={confirmedContact === false}
-          onPress={() => setConfirmedContact(false)}
-        >
-          <OptionName selected={confirmedContact === false}>Não</OptionName>
-        </Option>
-      </ContentSpace>
-      <Button
-        onSubmit={handleNextStep}
-        disabled={confirmedContact === null || suspiciousContact === null}
-      >
-        Confirmar
-      </Button>
+      <Button onSubmit={() => navigate('AvaliationStep2')}>Continuar</Button>
     </Container>
   );
 }
@@ -115,4 +62,14 @@ Step1.navigationOptions = {
   },
   headerLeftContainerStyle: null,
   headerTitleAlign: 'left',
+  headerStyle: {
+    height: 70,
+    backgroundColor: colors.primary,
+    borderBottomWidth: 0,
+    shadowColor: 'transparent',
+    shadowRadius: 0,
+    shadowOffset: {
+      height: 0,
+    },
+  },
 };

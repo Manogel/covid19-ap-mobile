@@ -1,15 +1,18 @@
 import React, { useRef, useEffect, useState } from 'react';
 import MapView, { Marker, UrlTile } from 'react-native-maps';
+import { useDispatch } from 'react-redux';
 
 import axios from 'axios';
 
 import CardCheers from '~/components/CardCheers';
 import CardInfo from '~/components/CardInfo';
 import Header from '~/components/Header';
+import SymptomActions from '~/store/ducks/symptom';
 
 import { Container, MarkerImage } from './styles';
 
 export default function Map() {
+  const dispatch = useDispatch();
   const mapRef = useRef();
   const [ubss, setUbss] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -30,6 +33,8 @@ export default function Map() {
       .then(response => {
         setUbss(response.data);
       });
+
+    dispatch(SymptomActions.getSymptomsRequest());
   }, []);
 
   return (

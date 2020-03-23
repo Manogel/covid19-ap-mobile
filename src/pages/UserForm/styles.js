@@ -5,6 +5,7 @@ import { colors, NunitoBold } from '~/styles';
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingBottom: 10,
+    paddingHorizontal: 15,
   },
   showsVerticalScrollIndicator: false,
 })`

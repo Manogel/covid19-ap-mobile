@@ -88,20 +88,23 @@ export default function SelectPicker(props) {
   function onItemSelected(item, isSelectSingle) {
     const selectedItem = [];
     const { data } = defaultState;
-    item.checked = !item.checked;
-    for (const index in data) {
-      if (data[index].id === item.id) {
-        data[index] = item;
-      } else if (isSelectSingle) {
-        data[index].checked = false;
-      }
-    }
-    data.forEach(item => {
+    const checked = !item.checked;
+
+    const newData = data.map(i =>
+      i.id === item.id
+        ? { ...i, checked }
+        : isSelectSingle
+        ? { ...i, checked: false }
+        : i
+    );
+
+    newData.forEach(item => {
       if (item.checked) selectedItem.push(item);
     });
+
     setDefaulState(oldData => ({
       ...oldData,
-      data,
+      data: newData,
       selectedItem,
     }));
   }

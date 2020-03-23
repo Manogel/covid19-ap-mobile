@@ -5,6 +5,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 
 import Button from '~/components/Button';
 import Header from '~/components/Header';
+import { colors } from '~/styles';
 
 import { Container, TextHtml, ImageCoronavirus } from './styles';
 
@@ -73,5 +74,15 @@ AvaliationResult.navigationOptions = ({ navigation: { state } }) => {
         <Icon name="left" color="#fff" size={25} />
       </TouchableOpacity>
     ),
+    headerStyle: {
+      height: 70,
+      backgroundColor: colors.primary,
+      borderBottomWidth: 0,
+      shadowColor: 'transparent',
+      shadowRadius: 0,
+      shadowOffset: {
+        height: 0,
+      },
+    },
   };
 };

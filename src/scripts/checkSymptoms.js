@@ -37,13 +37,12 @@ Baseado em suas respostas, é provável que essa situação NÃO se enquadre com
 export default function(data) {
   const { traveled, symptoms, suspiciousContact, confirmedContact } = data;
 
-  let numberSymptoms = 0;
-
-  symptoms.forEach(({ id }) => {
-    if ([10, 3, 7, 9].includes(id)) {
-      numberSymptoms += 1;
+  const numberSymptoms = symptoms.reduce((number, symptom) => {
+    if (symptom.probable) {
+      return number + 1;
     }
-  });
+    return number;
+  }, 0);
 
   if (numberSymptoms > 2 && suspiciousContact && confirmedContact) {
     return { result: true, render: result_true };

@@ -1,25 +1,36 @@
 import React, { useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import { MaskService } from 'react-native-masked-text';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Form } from '@unform/mobile';
+import Immutable from 'seamless-immutable';
 import * as Yup from 'yup';
 
 import Button from '~/components/Button';
 import Header from '~/components/Header';
 import Input from '~/components/Input';
 import PickerOptions from '~/components/PickerOptions';
-import dataSymptoms from '~/data/symptoms';
+import dataS from '~/data/symptoms';
+import UserActions from '~/store/ducks/user';
 import { colors } from '~/styles';
 
-import { Container, Title, InputContent, Label, Error } from './styles';
+import { Container, Title, InputContent, Label } from './styles';
 
 export default function UserForm() {
-  const [suspiciousContact, setSuspiciousContact] = useState(null);
-  const [confirmedContact, setConfirmedContact] = useState(null);
-  const [traveled, setTraveled] = useState(null);
-  const [sex, setSex] = useState({ error: null, value: null });
-  const [symptoms, setSymptoms] = useState(dataSymptoms);
+  const dispatchRedux = useDispatch();
+
+  const suspicious_contact = useSelector(
+    state => state.user.data.suspicious_contact
+  );
+  const confirmed_contact = useSelector(
+    state => state.user.data.confirmed_contact
+  );
+  const been_outside = useSelector(state => state.user.data.been_outside);
+  const sex = useSelector(state => state.user.data.sex);
+
+  const symptoms = useSelector(state => state.symptom.data);
+
   const formRef = useRef(null);
 
   async function handleSubmit(values) {
@@ -45,8 +56,8 @@ export default function UserForm() {
         abortEarly: false,
       });
       formRef.current.setErrors({});
-      if (!sex.value) {
-        setSex({ ...sex, error: 'Selecione seu sexo' });
+      if (!sex) {
+        Alert.alert('Você esqueceu de algo', 'Selecione seu sexo');
         return;
       }
     } catch (error) {
@@ -67,6 +78,12 @@ export default function UserForm() {
         // "Verifique sua conexão com a internet!"
       }
     }
+  }
+
+  function handleSelectSymptom(values = []) {
+    const newListItems = symptoms.map(s =>
+      values.includes(s.id) ? { ...s, checked: true } : { ...s, checked: false }
+    );
   }
 
   function handleFocusInput(name) {
@@ -193,16 +210,21 @@ export default function UserForm() {
             selectButtonText="Selecionar"
             title="Selecione"
             data={[
-              { id: 1, name: 'MASCULINO', checked: sex.value === 1 },
-              { id: 2, name: 'FEMININO', checked: sex.value === 2 },
+              { id: 1, name: 'MASCULINO', checked: sex === 'M' },
+              { id: 2, name: 'FEMININO', checked: sex === 'F' },
             ]}
-            onSelect={value => setSex({ error: null, value: value[0] })}
-            onRemoveItem={value => setSex({ error: null, value: value[0] })}
+            onSelect={value =>
+              dispatchRedux(
+                UserActions.changeSex(
+                  value[0] !== null ? (value[0] === 'M' ? 'M' : 'F') : null
+                )
+              )
+            }
+            onRemoveItem={value => dispatchRedux(UserActions.changeSex(null))}
             buttonTextStyle={{ textTransform: 'capitalize' }}
             showSearchBox={false}
             iconColorItemSected={colors.success}
           />
-          {sex.error && <Error>{sex.error}</Error>}
         </InputContent>
 
         <InputContent>
@@ -214,8 +236,8 @@ export default function UserForm() {
             selectButtonText="Selecionar"
             title="Selecione"
             data={symptoms}
-            onSelect={value => {}}
-            onRemoveItem={value => {}}
+            onSelect={value => handleSelectSymptom(value)}
+            onRemoveItem={value => handleSelectSymptom(value)}
             buttonTextStyle={{ textTransform: 'capitalize' }}
             showSearchBox={false}
             iconColorItemSected={colors.success}
@@ -236,11 +258,15 @@ export default function UserForm() {
             selectButtonText="Selecionar"
             title="Selecione"
             data={[
-              { id: 1, name: 'SIM', checked: suspiciousContact === 1 },
-              { id: 2, name: 'NÃO', checked: suspiciousContact === 2 },
+              { id: 1, name: 'SIM', checked: suspicious_contact },
+              { id: 2, name: 'NÃO', checked: !suspicious_contact },
             ]}
-            onSelect={value => setSuspiciousContact(value[0])}
-            onRemoveItem={value => setSuspiciousContact(value[0])}
+            onSelect={value =>
+              dispatchRedux(UserActions.changeSuspiciousContact(value[0] === 1))
+            }
+            onRemoveItem={value =>
+              dispatchRedux(UserActions.changeSuspiciousContact(null))
+            }
             buttonTextStyle={{ textTransform: 'capitalize' }}
             showSearchBox={false}
             iconColorItemSected={colors.success}
@@ -261,11 +287,15 @@ export default function UserForm() {
             selectButtonText="Selecionar"
             title="Selecione"
             data={[
-              { id: 1, name: 'SIM', checked: confirmedContact === 1 },
-              { id: 2, name: 'NÃO', checked: confirmedContact === 2 },
+              { id: 1, name: 'SIM', checked: confirmed_contact },
+              { id: 2, name: 'NÃO', checked: !confirmed_contact },
             ]}
-            onSelect={value => setConfirmedContact(value[0])}
-            onRemoveItem={value => setConfirmedContact(value[0])}
+            onSelect={value =>
+              dispatchRedux(UserActions.changeConfirmedContact(value[0] === 1))
+            }
+            onRemoveItem={value =>
+              dispatchRedux(UserActions.changeConfirmedContact(null))
+            }
             buttonTextStyle={{ textTransform: 'capitalize' }}
             showSearchBox={false}
             iconColorItemSected={colors.success}
@@ -282,11 +312,15 @@ export default function UserForm() {
             selectButtonText="Selecionar"
             title="Selecione"
             data={[
-              { id: 1, name: 'SIM', checked: traveled === 1 },
-              { id: 2, name: 'NÃO', checked: traveled === 2 },
+              { id: 1, name: 'SIM', checked: been_outside },
+              { id: 2, name: 'NÃO', checked: !been_outside },
             ]}
-            onSelect={value => setTraveled(value[0])}
-            onRemoveItem={value => setTraveled(value[0])}
+            onSelect={value =>
+              dispatchRedux(UserActions.changeBeenOutside(value[0] === 1))
+            }
+            onRemoveItem={value =>
+              dispatchRedux(UserActions.changeBeenOutside(null))
+            }
             buttonTextStyle={{ textTransform: 'capitalize' }}
             showSearchBox={false}
             iconColorItemSected={colors.success}
@@ -305,5 +339,15 @@ UserForm.navigationOptions = {
   ),
   headerTitleContainerStyle: {
     width: '80%',
+  },
+  headerStyle: {
+    height: 70,
+    backgroundColor: colors.primary,
+    borderBottomWidth: 0,
+    shadowColor: 'transparent',
+    shadowRadius: 0,
+    shadowOffset: {
+      height: 0,
+    },
   },
 };

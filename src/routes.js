@@ -38,11 +38,21 @@ const Routes = () =>
     createBottomTabNavigator(
       {
         Mapa: createStackNavigator(
-          { Map, AvaliationStep1, AvaliationStep2, AvaliationResult, UserForm },
+          {
+            Map,
+            AvaliationStep1,
+            AvaliationStep2,
+            AvaliationResult,
+            UserForm,
+          },
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
         Informações: createStackNavigator(
           { Informations, Detail },
+          { defaultNavigationOptions: defaultStackNavigationOptions }
+        ),
+        Cidadão: createStackNavigator(
+          { UserForm },
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
       },
