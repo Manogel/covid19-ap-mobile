@@ -1,11 +1,20 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 
 import { Container, ButtonText } from './styles';
 
-export default function Button({ children, onSubmit, ...rest }) {
+export default function Button({ children, onSubmit, loading, ...rest }) {
   return (
     <Container onPress={onSubmit} {...rest}>
-      <ButtonText>{children}</ButtonText>
+      {loading ? (
+        <ActivityIndicator color="#fff" size="small" />
+      ) : (
+        <ButtonText>{children}</ButtonText>
+      )}
     </Container>
   );
 }
+
+Button.defaultProps = {
+  loading: false,
+};

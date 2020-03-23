@@ -47,7 +47,7 @@ export default function Step2({ navigation: { dispatch } }) {
       suspiciousContact: suspicious_contact,
       confirmedContact: confirmed_contact,
     });
-    console.tron.warn(symptomsSelected);
+
     const resetAction = StackActions.reset({
       index: 0,
       actions: [

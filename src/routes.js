@@ -1,5 +1,6 @@
 import React from 'react';
 import OTIcon from 'react-native-vector-icons/Octicons';
+import SLIcon from 'react-native-vector-icons/SimpleLineIcons';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -10,6 +11,7 @@ import AvaliationStep2 from '~/pages/AvatiationForm/Step2';
 import Detail from '~/pages/Detail';
 import Informations from '~/pages/Informations';
 import Map from '~/pages/Map';
+import Profile from '~/pages/Profile';
 import UserForm from '~/pages/UserForm';
 
 import { colors } from './styles';
@@ -52,7 +54,7 @@ const Routes = () =>
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
         Cidadão: createStackNavigator(
-          { UserForm },
+          { Profile },
           { defaultNavigationOptions: defaultStackNavigationOptions }
         ),
       },
@@ -78,7 +80,8 @@ const Routes = () =>
                 return <OTIcon name="location" size={25} color={tintColor} />;
               case 'Informações':
                 return <OTIcon name="tasklist" size={25} color={tintColor} />;
-
+              case 'Cidadão':
+                return <SLIcon name="user" size={25} color={tintColor} />;
               default:
                 break;
             }

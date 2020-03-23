@@ -8,6 +8,7 @@ const { Types, Creators } = createActions({
   getSymptomsSuccess: ['data'],
   getSymptomsFailure: ['error'],
   checkSymptom: ['payload'],
+  setNewSymptomsList: ['data'],
 });
 
 export const SymptomTypes = Types;
@@ -29,4 +30,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_SYMPTOMS_FAILURE]: (state, { error }) =>
     state.merge({ loading: false, error }),
   [Types.CHECK_SYMPTOM]: state => state.merge({}),
+  [Types.SET_NEW_SYMPTOMS_LIST]: (state, { data }) => state.merge({ data }),
 });

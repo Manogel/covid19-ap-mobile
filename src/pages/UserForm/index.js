@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { MaskService } from 'react-native-masked-text';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Form } from '@unform/mobile';
+import moment from 'moment';
 import Immutable from 'seamless-immutable';
 import * as Yup from 'yup';
 
@@ -12,14 +13,15 @@ import Header from '~/components/Header';
 import Input from '~/components/Input';
 import PickerOptions from '~/components/PickerOptions';
 import dataS from '~/data/symptoms';
+import SymptomActions from '~/store/ducks/symptom';
 import UserActions from '~/store/ducks/user';
 import { colors } from '~/styles';
 
 import { Container, Title, InputContent, Label } from './styles';
 
-export default function UserForm() {
+export default function UserForm({ navigation }) {
   const dispatchRedux = useDispatch();
-
+  const loading = useSelector(state => state.user.loading);
   const suspicious_contact = useSelector(
     state => state.user.data.suspicious_contact
   );
@@ -33,23 +35,38 @@ export default function UserForm() {
 
   const formRef = useRef(null);
 
+  const numberSymptomsSeledted = useMemo(
+    () =>
+      symptoms.reduce((number, symptom) => {
+        if (symptom.checked) {
+          return number + 1;
+        }
+        return number;
+      }, 0),
+    [symptoms]
+  );
+
   async function handleSubmit(values) {
     try {
       const schema = Yup.object().shape({
-        nome: Yup.string()
+        name: Yup.string()
           .max(100, 'Máximo 50 caracteres')
           .required('Nome é obrigatório'),
         cpf: Yup.string()
           .cpf('Informe um CPF válido')
           .required('CPF é obrigatório'),
-        dt_nascimento: Yup.string()
+        birthday: Yup.string()
           .datebr('Informe uma data válida')
           .required('Data de nascimento é obrigatória'),
-        contato: Yup.string().required('Seu número para contato é obrigatório'),
+        contact: Yup.string().required('Seu número para contato é obrigatório'),
+        address: Yup.string().required('Seu endereço é necessário'),
         email: Yup.string()
           .email('Informe um email válido')
           .max(100, 'Máximo 50 caracteres')
           .required('Email é obrigatório'),
+        password: Yup.string()
+          .min(4, 'No mínimo 4 caracteres')
+          .required('Senha é obrigatória'),
       });
 
       await schema.validate(values, {
@@ -60,6 +77,17 @@ export default function UserForm() {
         Alert.alert('Você esqueceu de algo', 'Selecione seu sexo');
         return;
       }
+      if (numberSymptomsSeledted <= 0) {
+        Alert.alert('Você esqueceu de algo', 'Selecione seus sintomas!');
+        return;
+      }
+
+      dispatchRedux(
+        UserActions.onRegisterUser({
+          ...values,
+          birthday: moment(values.birthday, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        })
+      );
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -74,16 +102,17 @@ export default function UserForm() {
           data.message ? data.message : 'Servidor fora do ar!'
         );
       } else {
-        Alert.alert('Erro', error);
+        Alert.alert('Erro', 'Verifique sua conexão com a internet!');
         // "Verifique sua conexão com a internet!"
       }
     }
   }
 
-  function handleSelectSymptom(values = []) {
+  function handleSelectSymptom(values) {
     const newListItems = symptoms.map(s =>
       values.includes(s.id) ? { ...s, checked: true } : { ...s, checked: false }
     );
+    dispatchRedux(SymptomActions.setNewSymptomsList(newListItems));
   }
 
   function handleFocusInput(name) {
@@ -101,18 +130,18 @@ export default function UserForm() {
       <Form ref={formRef} onSubmit={handleSubmit}>
         <InputContent>
           <Input
-            name="nome"
+            name="name"
             label="Nome"
             placeholder="Seu nome"
             autoCapitalize="words"
-            onSubmitEditing={() => handleFocusInput('nome_social')}
+            onSubmitEditing={() => handleFocusInput('social_name')}
             returnKeyType="next"
             maxLength={100}
           />
         </InputContent>
         <InputContent>
           <Input
-            name="nome_social"
+            name="social_name"
             label="Nome social"
             placeholder="Como deseja ser chamado?"
             autoCapitalize="words"
@@ -133,13 +162,13 @@ export default function UserForm() {
               formRef.current.setFieldValue('cpf', formatted);
             }}
             returnKeyType="next"
-            onSubmitEditing={() => handleFocusInput('dt_nascimento')}
+            onSubmitEditing={() => handleFocusInput('birthday')}
           />
         </InputContent>
         <InputContent>
           <Input
             label="Data de nascimento"
-            name="dt_nascimento"
+            name="birthday"
             keyboardType="numeric"
             placeholder="Sua data de nascimento"
             autoCapitalize="none"
@@ -147,29 +176,39 @@ export default function UserForm() {
               const formatted = MaskService.toMask('datetime', text, {
                 format: 'DD/MM/YYYY',
               });
-              formRef.current.setFieldValue('dt_nascimento', formatted);
+              formRef.current.setFieldValue('birthday', formatted);
             }}
-            onSubmitEditing={() => handleFocusInput('contato')}
+            onSubmitEditing={() => handleFocusInput('contact')}
             returnKeyType="next"
             maxLength={10}
           />
         </InputContent>
         <InputContent>
           <Input
-            name="contato"
+            name="contact"
             label="Contato"
             keyboardType="numeric"
             placeholder="(XX) XXXXX-XXXX"
             autoCapitalize="none"
-            onSubmitEditing={() => handleFocusInput('email')}
+            onSubmitEditing={() => handleFocusInput('address')}
             onChangeText={text => {
               const formatted = MaskService.toMask('cel-phone', text, {
                 maskType: 'BRL',
                 withDDD: true,
                 dddMask: '(99) ',
               });
-              formRef.current.setFieldValue('contato', formatted);
+              formRef.current.setFieldValue('contact', formatted);
             }}
+            returnKeyType="next"
+          />
+        </InputContent>
+
+        <InputContent>
+          <Input
+            name="address"
+            label="Endereço"
+            placeholder="Avenida bla bla bla..."
+            onSubmitEditing={() => handleFocusInput('email')}
             returnKeyType="next"
           />
         </InputContent>
@@ -178,19 +217,21 @@ export default function UserForm() {
           <Input
             label="Email"
             name="email"
-            autoCapitalize="none"
             placeholder="Seu email"
-            autoCorrect={false}
-            onSubmitEditing={() => handleFocusInput('senha')}
+            onSubmitEditing={() => handleFocusInput('password')}
             returnKeyType="next"
+            caretHidden
+            autoCapitalize="none"
+            autoCorrect={false}
             keyboardType="email-address"
+            autoCompleteType="email"
           />
         </InputContent>
 
         <InputContent>
           <Input
             label="Senha"
-            name="senha"
+            name="password"
             autoCapitalize="none"
             placeholder="Senha para para acessar seu cadastro"
             autoCorrect={false}
@@ -216,7 +257,7 @@ export default function UserForm() {
             onSelect={value =>
               dispatchRedux(
                 UserActions.changeSex(
-                  value[0] !== null ? (value[0] === 'M' ? 'M' : 'F') : null
+                  value[0] !== null ? (value[0] === 1 ? 'M' : 'F') : null
                 )
               )
             }
@@ -327,7 +368,9 @@ export default function UserForm() {
           />
         </InputContent>
 
-        <Button onSubmit={() => formRef.current.submitForm()}>Salvar</Button>
+        <Button loading={loading} onSubmit={() => formRef.current.submitForm()}>
+          Salvar
+        </Button>
       </Form>
     </Container>
   );
