@@ -16,7 +16,7 @@
     "@react-native-community/masked-view": "^0.1.7",
     "@unform/core": "^2.0.0",
     "@unform/mobile": "^2.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "moment": "^2.24.0",
     "parse": "^2.11.0",
