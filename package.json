@@ -18,7 +18,7 @@
     "@unform/mobile": "^2.0.0",
     "axios": "^0.19.2",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "parse": "^2.11.0",
     "prop-types": "^15.7.2",
     "ramda": "^0.27.0",
